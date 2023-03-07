@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Queries" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\building blocks\Core\Core.csproj" />
+      <ProjectReference Include="..\Store.Customers.Domain\Store.Customers.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

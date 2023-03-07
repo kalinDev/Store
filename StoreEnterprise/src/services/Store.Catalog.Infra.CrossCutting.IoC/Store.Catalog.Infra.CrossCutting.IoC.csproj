@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Store.Catalog.Infra.CrossCutting</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Store.Authentication.Data\Store.Authentication.Data.csproj" />
+      <ProjectReference Include="..\Store.Catalog.Application\Store.Catalog.Application.csproj" />
+      <ProjectReference Include="..\Store.Catalog.Data\Store.Catalog.Data.csproj" />
+    </ItemGroup>
+
+</Project>
