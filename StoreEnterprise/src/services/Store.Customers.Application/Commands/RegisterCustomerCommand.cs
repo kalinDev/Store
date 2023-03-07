@@ -45,7 +45,7 @@ public class RegisterCustomerValidation : AbstractValidator<RegisterCustomerComm
         
         RuleFor(c => c.Email)
             .Must(HaveValidEmail)
-            .WithMessage("The provided CPF is not valid");
+            .WithMessage("The provided email is not valid");
     }
 
     protected static bool HaveValidCpf(string cpf)

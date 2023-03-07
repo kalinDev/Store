@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="EasyNetQ" Version="8.0.0-beta8" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.14" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.14" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.14" />
@@ -20,9 +21,11 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.14" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.8" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\building blocks\Core\Core.csproj" />
       <ProjectReference Include="..\..\building blocks\Store.WebApi.Core\Store.WebApi.Core.csproj" />
       <ProjectReference Include="..\Store.Authentication.Data\Store.Authentication.Data.csproj" />
       <ProjectReference Include="..\Store.Authentication.Infra.CrossCutting.IoC\Store.Authentication.Infra.CrossCutting.IoC.csproj" />

@@ -7,6 +7,8 @@ using Store.Customers.Application.Events;
 using Store.Customers.Data;
 using Store.Customers.Data.Repositories;
 using Store.Customers.Domain.Interfaces;
+using Store.Customers.Service;
+using Store.Customers.Service.Services;
 
 namespace Store.Client.Infra.CrossCutting.IoC;
 
@@ -21,6 +23,8 @@ public static class DependencyInjectionConfig
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<CustomersContext>();
+
+        services.AddHostedService<RegisterCustomerIntegrationHandler>();
 
     }
 }

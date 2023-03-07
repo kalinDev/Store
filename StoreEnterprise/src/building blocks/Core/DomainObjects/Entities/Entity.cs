@@ -14,16 +14,19 @@ public abstract class Entity
     private List<Event> _notifications;
 
     public IReadOnlyCollection<Event> Notifications 
-        => _notifications.AsReadOnly();
+        => _notifications?.AsReadOnly();
 
     public void AddEvent(Event eventItem)
-        => _notifications.Add(eventItem);
+    {
+        _notifications = _notifications ?? new List<Event>();
+        _notifications.Add(eventItem);
+    }
     
     public void RemoveEvent(Event eventItem)
-        => _notifications.Remove(eventItem);    
+        => _notifications?.Remove(eventItem);    
     
     public void ClearEvents()
-        => _notifications.Clear();    
+        => _notifications?.Clear();    
     
     public override bool Equals(object obj)
     {

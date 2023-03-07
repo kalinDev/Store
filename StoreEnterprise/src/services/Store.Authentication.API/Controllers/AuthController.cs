@@ -1,6 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Core.Messages.IntegrationEvent;
+using EasyNetQ;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -18,6 +20,7 @@ public class AuthController : ApiController
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly JwtSettings _jwtSettings;
+    private IBus _bus;
     
     public AuthController(SignInManager<IdentityUser>  signInManager, 
                           UserManager<IdentityUser> userManager,
@@ -43,6 +46,15 @@ public class AuthController : ApiController
 
         if (result.Succeeded)
         {
+            var success = await RegisterCustomer(model);
+            if (!success.ValidationResult.IsValid)
+            {
+                await _userManager.DeleteAsync(user);
+            
+                success.ValidationResult.Errors.ForEach(error => AddError(error.ErrorMessage));
+                return CustomResponse();
+            }
+            
             await _signInManager.SignInAsync(user, false);
             return CustomResponse(await GenerateJwt(model.Email));
         }
@@ -53,6 +65,18 @@ public class AuthController : ApiController
         }
 
         return CustomResponse();
+    }
+
+    private async Task<ResponseMessage> RegisterCustomer(UserRegisterRequest userRegisterRequest)
+    {
+        var user = await _userManager.FindByEmailAsync(userRegisterRequest.Email);
+        var userRegistered = new UserRegisteredIntegrationEvent(
+            Guid.Parse(user.Id), userRegisterRequest.Name, userRegisterRequest.Email, userRegisterRequest.Cpf);
+
+        _bus = RabbitHutch.CreateBus("host=localhost:5672");
+
+        return await _bus.Rpc.RequestAsync<UserRegisteredIntegrationEvent, ResponseMessage>(userRegistered);
+
     }
     
     [HttpPost("Authenticate")]
