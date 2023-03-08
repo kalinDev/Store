@@ -8,6 +8,7 @@ builder.Services.AddSwaggerConfiguration();
 builder.Services.AddIdentityConfiguration(builder.Configuration);
 
 builder.Services.ResolveDependencies();
+builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
 var app = builder.Build();
 

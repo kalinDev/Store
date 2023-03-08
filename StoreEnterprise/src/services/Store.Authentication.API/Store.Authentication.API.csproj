@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\building blocks\Core\Core.csproj" />
+      <ProjectReference Include="..\..\building blocks\Store.MessageBus\Store.MessageBus.csproj" />
       <ProjectReference Include="..\..\building blocks\Store.WebApi.Core\Store.WebApi.Core.csproj" />
       <ProjectReference Include="..\Store.Authentication.Data\Store.Authentication.Data.csproj" />
       <ProjectReference Include="..\Store.Authentication.Infra.CrossCutting.IoC\Store.Authentication.Infra.CrossCutting.IoC.csproj" />

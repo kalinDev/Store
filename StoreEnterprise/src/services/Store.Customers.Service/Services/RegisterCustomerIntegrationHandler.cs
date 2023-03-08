@@ -3,33 +3,45 @@ using System.Threading;
 using System.Threading.Tasks;
 using Core.MediatR;
 using Core.Messages.IntegrationEvent;
-using EasyNetQ;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Store.Customers.Application.Commands;
+using Store.MessageBus;
 
 namespace Store.Customers.Service.Services
 {
     public class RegisterCustomerIntegrationHandler : BackgroundService
     {
-        private IBus _bus;
+        private readonly IMessageBus _bus;
         private readonly IServiceProvider _serviceProvider;
         
-        public RegisterCustomerIntegrationHandler(IServiceProvider serviceProvider)
+        public RegisterCustomerIntegrationHandler(IServiceProvider serviceProvider, IMessageBus bus)
         {
             _serviceProvider = serviceProvider;
-        }
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            _bus = RabbitHutch.CreateBus("host=localhost:5672");
-            _bus.Rpc.RespondAsync<UserRegisteredIntegrationEvent, ResponseMessage>(async request
-                => new ResponseMessage(await RegisterCustomer(request)));
-            
-            return Task.CompletedTask;
+            _bus = bus;
         }
 
-        private async Task<ValidationResult> RegisterCustomer(UserRegisteredIntegrationEvent message)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            SetResponder();
+            return Task.CompletedTask;
+        }
+        
+        private void SetResponder()
+        {
+            _bus.RespondAsync<UserRegisteredIntegrationEvent, ResponseMessage>(async request
+                => await RegisterCustomer(request));
+
+            _bus.AdvancedBus.Connected += OnConnect;
+        }
+
+        private void OnConnect(object s, EventArgs e)
+        {
+            SetResponder();
+        }
+        
+        private async Task<ResponseMessage> RegisterCustomer(UserRegisteredIntegrationEvent message)
         {
             var customerCommand = new RegisterCustomerCommand(message.Id, message.Name, message.Email, message.Cpf);
 
@@ -37,7 +49,7 @@ namespace Store.Customers.Service.Services
             var mediator = scope.ServiceProvider.GetRequiredService<IMediatorHandler>();
             var success = await mediator.SendCommand(customerCommand);
 
-            return success;
+            return new ResponseMessage(success);
         }
     }
 }

@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\building blocks\Store.MessageBus\Store.MessageBus.csproj" />
       <ProjectReference Include="..\..\building blocks\Store.WebApi.Core\Store.WebApi.Core.csproj" />
       <ProjectReference Include="..\Store.Customers.Application\Store.Customers.Application.csproj" />
       <ProjectReference Include="..\Store.Customers.Data\Store.Customers.Data.csproj" />

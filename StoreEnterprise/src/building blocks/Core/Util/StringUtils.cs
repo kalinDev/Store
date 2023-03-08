@@ -1,4 +1,4 @@
-﻿namespace Core.DomainObjects.Util;
+﻿namespace Core.Util;
 
 public static class StringUtils
 {

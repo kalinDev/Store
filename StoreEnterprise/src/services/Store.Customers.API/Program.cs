@@ -8,6 +8,7 @@ builder.Services.AddApiConfiguration(builder.Configuration);
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddMediatR(cfg=>cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 builder.Services.AddAutoMapperConfiguration();
+builder.Services.AddMessageBusConfiguration(builder.Configuration);
 
 builder.Services.ResolveDependencies();
 
